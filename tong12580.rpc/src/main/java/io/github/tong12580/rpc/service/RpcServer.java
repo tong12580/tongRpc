@@ -22,8 +22,6 @@ public class RpcServer extends Thread {
     private int port;
     private int workerGroupThreadsSize;
     private int bossGroupThreadsSize;
-    private EventLoopGroup bossGroup;
-    private EventLoopGroup workerGroup;
 
     public RpcServer(int port, int workerGroupThreadsSize, int bossGroupThreadsSize) {
         super("rpcServer");
@@ -43,8 +41,8 @@ public class RpcServer extends Thread {
     @Override
     public void run() {
         log.info("Netty server start, port is : {}", port);
-        bossGroup = new NioEventLoopGroup(bossGroupThreadsSize);
-        workerGroup = new NioEventLoopGroup(workerGroupThreadsSize);
+        EventLoopGroup bossGroup = new NioEventLoopGroup(bossGroupThreadsSize);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(workerGroupThreadsSize);
         ServerBootstrap b = new ServerBootstrap();
         b = b.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -65,16 +63,10 @@ public class RpcServer extends Thread {
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("NettyServer error", e);
-        }
-    }
-
-    public void closeNettyService() {
-        if (null != workerGroup) {
+        } finally {
             workerGroup.shutdownGracefully();
-        }
-        if (null != bossGroup) {
             bossGroup.shutdownGracefully();
+            SerializerMessageUtils.cleanBuffer();
         }
-        SerializerMessageUtils.cleanBuffer();
     }
 }
