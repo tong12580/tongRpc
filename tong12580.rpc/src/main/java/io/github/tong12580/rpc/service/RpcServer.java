@@ -1,11 +1,20 @@
 package io.github.tong12580.rpc.service;
 
-import io.github.tong12580.rpc.common.SerializerMessageUtils;
+import io.github.tong12580.rpc.common.SerializerUtils;
+import io.github.tong12580.rpc.core.coder.RpcMessageDecoder;
+import io.github.tong12580.rpc.core.coder.RpcMessageEncoder;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,18 +33,10 @@ public class RpcServer extends Thread {
     private int bossGroupThreadsSize;
 
     public RpcServer(int port, int workerGroupThreadsSize, int bossGroupThreadsSize) {
-        super("rpcServer");
+        super("RpcServer");
         this.port = port;
         this.workerGroupThreadsSize = workerGroupThreadsSize;
         this.bossGroupThreadsSize = bossGroupThreadsSize;
-    }
-
-    private class ServerSocketChannelInitializer<T extends Channel> extends ChannelInitializer {
-
-        @Override
-        protected void initChannel(Channel ch) throws Exception {
-
-        }
     }
 
     @Override
@@ -46,7 +47,17 @@ public class RpcServer extends Thread {
         ServerBootstrap b = new ServerBootstrap();
         b = b.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ServerSocketChannelInitializer<SocketChannel>())
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) {
+                        ch.pipeline()
+                                .addLast(new ProtobufVarint32FrameDecoder())
+                                .addLast(new ProtobufVarint32LengthFieldPrepender())
+                                .addLast(new RpcMessageDecoder())
+                                .addLast(new RpcNettyServerHandler())
+                                .addLast(new RpcMessageEncoder());
+                    }
+                })
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.SO_BACKLOG, 1024)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -54,7 +65,7 @@ public class RpcServer extends Thread {
             ChannelFuture future = b.bind(port).sync();
             future.addListener((ChannelFutureListener) channelFuture -> {
                 if (channelFuture.isSuccess()) {
-                    log.error("Server bound");
+                    log.info("Server bound");
                 } else {
                     log.error("Bind attempt failed");
                     channelFuture.cause().printStackTrace();
@@ -66,7 +77,12 @@ public class RpcServer extends Thread {
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
-            SerializerMessageUtils.cleanBuffer();
+            SerializerUtils.cleanBuffer();
         }
+    }
+
+    public static void main(String[] args) {
+        Thread thread = new Thread(new RpcServer(8080, 1, 1));
+        thread.start();
     }
 }
