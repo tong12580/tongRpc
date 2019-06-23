@@ -1,10 +1,11 @@
 package io.github.tong12580.rpc.core.sync;
 
+import io.github.tong12580.rpc.common.Constants;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * <p>SyncFuture</p>
@@ -14,8 +15,9 @@ import java.util.concurrent.TimeoutException;
  * @version 1.0
  * @since 2019/6/23 17:24
  */
+@Slf4j
 public class SyncFuture<T> implements Future<T> {
-    private CountDownLatch latch = new CountDownLatch(1);
+    private final CountDownLatch latch = new CountDownLatch(1);
 
     private T response;
     private long beginTime = System.currentTimeMillis();
@@ -36,15 +38,33 @@ public class SyncFuture<T> implements Future<T> {
     }
 
     @Override
-    public T get() throws InterruptedException, ExecutionException {
-        latch.await();
-        return this.response;
+    public T get() {
+        if (isDone()) {
+            return this.response;
+        }
+        try {
+            latch.await(Constants.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS);
+            if (isDone()) {
+                return this.response;
+            }
+        } catch (InterruptedException e) {
+            log.error("Synchronization timeout exception!", e);
+        }
+        return null;
     }
 
     @Override
-    public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-        if (latch.await(timeout, unit)) {
+    public T get(long timeout, TimeUnit unit) {
+        if (isDone()) {
             return this.response;
+        }
+        try {
+            latch.await(timeout, unit);
+            if (isDone()) {
+                return this.response;
+            }
+        } catch (InterruptedException e) {
+            log.error("Lock wait timeout exception!", e);
         }
         return null;
     }
