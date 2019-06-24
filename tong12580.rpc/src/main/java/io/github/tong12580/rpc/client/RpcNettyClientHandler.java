@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.service;
+package io.github.tong12580.rpc.client;
 
 import io.github.tong12580.rpc.common.message.ResultMessage;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.service;
+package io.github.tong12580.rpc.client;
 
 import io.github.tong12580.rpc.core.coder.RpcMessageDecoder;
 import io.github.tong12580.rpc.core.coder.RpcMessageEncoder;
