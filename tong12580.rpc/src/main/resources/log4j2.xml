@@ -46,11 +46,9 @@
         <logger name="io.github.tong12580.rpc.service" level="INFO" >
             <appender-ref ref="serverFile"/>
         </logger>
-        <logger name="io.github.tong12580" level="error">
-            <appender-ref ref="Error"/>
-        </logger>
         <root level="info">
             <AppenderRef  ref="Console"/>
+            <appender-ref ref="Error"/>
         </root>
     </loggers>
 </configuration>
