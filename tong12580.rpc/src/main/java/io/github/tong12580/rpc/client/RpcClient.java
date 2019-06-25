@@ -80,8 +80,10 @@ public class RpcClient extends Thread {
                     log.info("----------------connect server success {}----------------", socketChannel.localAddress());
                     this.channel = socketChannel;
                 } else {
-                    log.error("Connect server attempt failed!");
-                    channelFuture.cause().printStackTrace();
+                    log.error("Connect server attempt failed!", channelFuture.cause());
+                    channelFuture.channel()
+                            .eventLoop()
+                            .schedule(new RpcClient(port, host, clientLoopSize), 10, TimeUnit.SECONDS);
                 }
             });
             future.channel().closeFuture().sync();
