@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * <p>RpcServiceMessageEncoder</p>
  * <span>消息服务编码器</span>
+ * 协议类型 <span>Protobuf</span>
  *
  * @author yuTong
  * @version 1.0

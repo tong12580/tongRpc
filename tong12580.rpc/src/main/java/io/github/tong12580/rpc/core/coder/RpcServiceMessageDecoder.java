@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * <p>RpcServiceMessageDecoder</p>
  * <span>消息服务解码器</span>
+ * 协议类型 <span>Protobuf</span>
  *
  * @author yuTong
  * @version 1.0

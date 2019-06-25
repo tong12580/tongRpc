@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * 消息服务端编码器
+ * 协议类型 <span>Protobuf</span>
  * RpcClientMessageEncoder
  *
  * @author yuTong
