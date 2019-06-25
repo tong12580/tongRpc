@@ -12,12 +12,12 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
         </Console>
 
-        <RollingRandomAccessFile name="Error" fileName="${LOG_HOME}/${NAME}-error.log"
+        <RollingRandomAccessFile name="warnFile" fileName="${LOG_HOME}/${NAME}-error.log"
                                  filePattern="${LOG_HOME}/$${date:yyyy-MM}/%d{MM-dd-yyyy}-%i-error.log.gz">
-            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
             <Policies>
-                <SizeBasedTriggeringPolicy size="1 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
         </RollingRandomAccessFile>
         <RollingFile name="serverFile" fileName="${LOG_HOME}/${NAME}-${SERVER_FILE_NAME}.log"
@@ -25,17 +25,16 @@
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
         </RollingFile>
 
         <RollingFile name="clientFile" fileName="${LOG_HOME}/${NAME}-${CLIENT_FILE_NAME}.log"
                      filePattern="${LOG_HOME}/$${date:yyyy-MM}/${NAME}-${CLIENT_FILE_NAME}-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level - %msg%xEx%n"/>
-<!--            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>-->
             <Policies>
                 <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
             </Policies>
         </RollingFile>
     </appenders>
@@ -48,7 +47,7 @@
         </logger>
         <root level="info">
             <AppenderRef  ref="Console"/>
-            <appender-ref ref="Error"/>
+            <appender-ref ref="warnFile"/>
         </root>
     </loggers>
 </configuration>
