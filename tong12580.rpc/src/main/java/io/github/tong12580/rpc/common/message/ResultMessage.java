@@ -14,6 +14,7 @@ public class ResultMessage {
     private Long requestId;
     private byte[] result;
     private Class aClass;
+    private String pong;
 
     public Long getRequestId() {
         return requestId;
@@ -27,6 +28,13 @@ public class ResultMessage {
         return JSON.parseObject(result, aClass);
     }
 
+    public String getPong() {
+        return pong;
+    }
+
+    public void setPong(String pong) {
+        this.pong = pong;
+    }
 
     public void setBody(Object t) {
         this.aClass = t.getClass();

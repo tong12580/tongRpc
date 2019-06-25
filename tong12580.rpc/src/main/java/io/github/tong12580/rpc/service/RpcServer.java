@@ -1,10 +1,9 @@
 package io.github.tong12580.rpc.service;
 
 import io.github.tong12580.rpc.common.SerializerUtils;
-import io.github.tong12580.rpc.core.coder.RpcMessageDecoder;
-import io.github.tong12580.rpc.core.coder.RpcMessageEncoder;
+import io.github.tong12580.rpc.core.coder.RpcServiceMessageDecoder;
+import io.github.tong12580.rpc.core.coder.RpcServiceMessageEncoder;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
@@ -53,9 +52,9 @@ public class RpcServer extends Thread {
                         ch.pipeline()
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufVarint32LengthFieldPrepender())
-                                .addLast(new RpcMessageDecoder())
+                                .addLast(new RpcServiceMessageDecoder())
                                 .addLast(new RpcNettyServerHandler())
-                                .addLast(new RpcMessageEncoder());
+                                .addLast(new RpcServiceMessageEncoder());
                     }
                 })
                 .option(ChannelOption.TCP_NODELAY, true)
@@ -79,10 +78,5 @@ public class RpcServer extends Thread {
             bossGroup.shutdownGracefully();
             SerializerUtils.cleanBuffer();
         }
-    }
-
-    public static void main(String[] args) {
-        Thread thread = new Thread(new RpcServer(8080, 1, 1));
-        thread.start();
     }
 }

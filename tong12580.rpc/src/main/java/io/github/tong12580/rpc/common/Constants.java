@@ -10,7 +10,7 @@ package io.github.tong12580.rpc.common;
  */
 public interface Constants {
     /**
-     * 默認超時時間
+     * 默認超時時間 6秒
      */
-    int DEFAULT_TIMEOUT = 300;
+    int DEFAULT_TIMEOUT = 6000;
 }

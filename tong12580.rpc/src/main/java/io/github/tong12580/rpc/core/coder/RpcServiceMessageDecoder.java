@@ -11,15 +11,15 @@ import io.netty.handler.codec.MessageToMessageDecoder;
 import java.util.List;
 
 /**
- * <p>RpcMessageDecoder</p>
- * <span></span>
+ * <p>RpcServiceMessageDecoder</p>
+ * <span>消息服务解码器</span>
  *
  * @author yuTong
  * @version 1.0
  * @since 2019/6/22 22:50
  */
 @Sharable
-public class RpcMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
+public class RpcServiceMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
         RequestMessage requestMessage = SerializerUtils.deserializer(

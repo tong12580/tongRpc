@@ -9,15 +9,15 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 import java.util.List;
 
 /**
- * <p>RpcMessageEncoder</p>
- * <span>消息编码器</span>
+ * <p>RpcServiceMessageEncoder</p>
+ * <span>消息服务编码器</span>
  *
  * @author yuTong
  * @version 1.0
  * @since 2019/6/22 23:19
  */
 @Sharable
-public class RpcMessageEncoder extends MessageToMessageEncoder<ResultMessage> {
+public class RpcServiceMessageEncoder extends MessageToMessageEncoder<ResultMessage> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ResultMessage msg, List<Object> out) throws Exception {

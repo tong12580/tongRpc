@@ -10,8 +10,9 @@ package io.github.tong12580.rpc.common.message;
  */
 public class RequestMessage {
     private Long requestId;
+    private String ping;
     private String className;
-    private String MethodNames;
+    private String methodNames;
     private Class<?>[] params;
     private Object[] values;
 
@@ -32,11 +33,11 @@ public class RequestMessage {
     }
 
     public String getMethodNames() {
-        return MethodNames;
+        return methodNames;
     }
 
     public void setMethodNames(String methodNames) {
-        MethodNames = methodNames;
+        this.methodNames = methodNames;
     }
 
     public Class<?>[] getParams() {
@@ -53,5 +54,13 @@ public class RequestMessage {
 
     public void setValues(Object[] values) {
         this.values = values;
+    }
+
+    public String getPing() {
+        return ping;
+    }
+
+    public void setPing(String ping) {
+        this.ping = ping;
     }
 }

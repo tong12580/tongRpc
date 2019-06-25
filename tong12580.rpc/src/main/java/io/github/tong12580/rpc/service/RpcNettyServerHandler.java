@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class RpcNettyServerHandler extends SimpleChannelInboundHandler<RequestMessage> {
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RequestMessage msg) throws Exception {
         log.info("message {}", JSON.toJSONString(msg));
