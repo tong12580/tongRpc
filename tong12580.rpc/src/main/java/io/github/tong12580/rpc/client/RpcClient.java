@@ -13,6 +13,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -58,11 +60,14 @@ public class RpcClient extends Thread {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
+                                .addLast(new StringDecoder())
+                                .addLast(new StringEncoder())
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufVarint32LengthFieldPrepender())
                                 .addLast(new RpcClientMessageDecoder())
+                                .addLast(new RpcClientMessageEncoder())
                                 .addLast(rpcNettyClientHandler)
-                                .addLast(new RpcClientMessageEncoder());
+                                ;
                     }
                 });
         try {

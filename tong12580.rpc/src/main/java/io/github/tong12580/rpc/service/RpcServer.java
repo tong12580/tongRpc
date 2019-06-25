@@ -53,8 +53,9 @@ public class RpcServer extends Thread {
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufVarint32LengthFieldPrepender())
                                 .addLast(new RpcServiceMessageDecoder())
+                                .addLast(new RpcServiceMessageEncoder())
                                 .addLast(new RpcNettyServerHandler())
-                                .addLast(new RpcServiceMessageEncoder());
+                        ;
                     }
                 })
                 .option(ChannelOption.TCP_NODELAY, true)

@@ -2,6 +2,10 @@ package io.github.tong12580.rpc.core.coder;
 
 import io.github.tong12580.rpc.common.SerializerUtils;
 import io.github.tong12580.rpc.common.message.ResultMessage;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
@@ -21,6 +25,6 @@ public class RpcServiceMessageEncoder extends MessageToMessageEncoder<ResultMess
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ResultMessage msg, List<Object> out) throws Exception {
-        out.add(SerializerUtils.serializer(msg));
+        out.add(Unpooled.wrappedBuffer(SerializerUtils.serializer(msg)));
     }
 }
