@@ -9,12 +9,21 @@ package io.github.tong12580.rpc.common.message;
  * @since 2019/6/22 22:23
  */
 public class RequestMessage {
+    private String clientId;
     private Long requestId;
     private String ping;
     private String className;
     private String methodNames;
     private Class<?>[] params;
     private Object[] values;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 
     public Long getRequestId() {
         return requestId;

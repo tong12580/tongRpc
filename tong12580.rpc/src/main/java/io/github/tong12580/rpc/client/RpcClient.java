@@ -5,6 +5,7 @@ import io.github.tong12580.rpc.core.coder.RpcClientMessageEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -13,9 +14,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>RpcClient</p>
@@ -52,7 +56,6 @@ public class RpcClient extends Thread {
         log.info("Netty client start, port is : {}", port);
         EventLoopGroup eventExecutors = new NioEventLoopGroup(clientLoopSize);
         Bootstrap bootstrap = new Bootstrap();
-        final RpcNettyClientHandler rpcNettyClientHandler = new RpcNettyClientHandler();
         bootstrap.channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .group(eventExecutors)
@@ -60,27 +63,28 @@ public class RpcClient extends Thread {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
-                                .addLast(new StringDecoder())
-                                .addLast(new StringEncoder())
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufVarint32LengthFieldPrepender())
                                 .addLast(new RpcClientMessageDecoder())
                                 .addLast(new RpcClientMessageEncoder())
-                                .addLast(rpcNettyClientHandler)
-                                ;
+                                .addLast(new IdleStateHandler(0, 1, 0, TimeUnit.MINUTES))
+                                .addLast(new RpcNettyClientHandler(UUID.randomUUID().toString()))
+                        ;
                     }
                 });
         try {
             ChannelFuture future = bootstrap.connect(host, port).sync();
-            if (future.isSuccess()) {
-                SocketChannel socketChannel = (SocketChannel) future.channel();
-                log.info("----------------connect server success {}----------------", socketChannel.localAddress());
-                this.channel = socketChannel;
-                socketChannel.closeFuture().sync();
-            }
-            if (null == getChannel()) {
-                this.channel = rpcNettyClientHandler.getChannel();
-            }
+            future.addListener((ChannelFutureListener) channelFuture -> {
+                if (channelFuture.isSuccess()) {
+                    SocketChannel socketChannel = (SocketChannel) channelFuture.channel();
+                    log.info("----------------connect server success {}----------------", socketChannel.localAddress());
+                    this.channel = socketChannel;
+                    socketChannel.closeFuture().sync();
+                } else {
+                    log.error("Connect server attempt failed!");
+                    channelFuture.cause().printStackTrace();
+                }
+            });
         } catch (InterruptedException e) {
             log.error("RpcNettyClient error", e);
         } finally {

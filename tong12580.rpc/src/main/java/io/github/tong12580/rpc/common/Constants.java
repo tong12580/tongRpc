@@ -13,4 +13,7 @@ public interface Constants {
      * 默認超時時間 6秒
      */
     int DEFAULT_TIMEOUT = 6000;
+    int CLOSE_THRESHOLD_VALUE = 2;
+    String PING = "Ping";
+    String PONG = "Pong";
 }

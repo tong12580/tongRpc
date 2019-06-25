@@ -14,7 +14,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * rpc服务
@@ -54,7 +58,8 @@ public class RpcServer extends Thread {
                                 .addLast(new ProtobufVarint32LengthFieldPrepender())
                                 .addLast(new RpcServiceMessageDecoder())
                                 .addLast(new RpcServiceMessageEncoder())
-                                .addLast(new RpcNettyServerHandler())
+                                .addLast(new RpcNettyServerHandler(UUID.randomUUID().toString()))
+                                .addLast(new IdleStateHandler(61,0,0, TimeUnit.SECONDS))
                         ;
                     }
                 })
@@ -65,9 +70,9 @@ public class RpcServer extends Thread {
             ChannelFuture future = b.bind(port).sync();
             future.addListener((ChannelFutureListener) channelFuture -> {
                 if (channelFuture.isSuccess()) {
-                    log.info("Server bound");
+                    log.info("----------------Server start success {}----------------", channelFuture.channel().localAddress());
                 } else {
-                    log.error("Bind attempt failed");
+                    log.error("Server start attempt failed!");
                     channelFuture.cause().printStackTrace();
                 }
             });

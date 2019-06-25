@@ -11,10 +11,19 @@ import com.alibaba.fastjson.JSON;
  * @since 2019/6/22 23:07
  */
 public class ResultMessage {
+    private String serverId;
     private Long requestId;
     private byte[] result;
     private Class aClass;
     private String pong;
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(String serverId) {
+        this.serverId = serverId;
+    }
 
     public Long getRequestId() {
         return requestId;
@@ -25,7 +34,10 @@ public class ResultMessage {
     }
 
     public Object getBody() {
-        return JSON.parseObject(result, aClass);
+        if (null != result && result.length > 0) {
+            return JSON.parseObject(result, aClass);
+        }
+        return null;
     }
 
     public String getPong() {
