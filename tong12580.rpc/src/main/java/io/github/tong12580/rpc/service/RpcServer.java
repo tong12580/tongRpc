@@ -59,7 +59,7 @@ public class RpcServer extends Thread {
                                 .addLast(new RpcServiceMessageDecoder())
                                 .addLast(new RpcServiceMessageEncoder())
                                 .addLast(new RpcNettyServerHandler(UUID.randomUUID().toString()))
-                                .addLast(new IdleStateHandler(61,0,0, TimeUnit.SECONDS))
+                                .addLast(new IdleStateHandler(61, 0, 0, TimeUnit.SECONDS))
                         ;
                     }
                 })
@@ -70,7 +70,8 @@ public class RpcServer extends Thread {
             ChannelFuture future = b.bind(port).sync();
             future.addListener((ChannelFutureListener) channelFuture -> {
                 if (channelFuture.isSuccess()) {
-                    log.info("----------------Server start success {}----------------", channelFuture.channel().localAddress());
+                    log.info("----------------Server start success {}----------------",
+                            channelFuture.channel().localAddress());
                 } else {
                     log.error("Server start attempt failed!");
                     channelFuture.cause().printStackTrace();

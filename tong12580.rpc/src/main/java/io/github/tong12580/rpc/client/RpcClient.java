@@ -79,12 +79,12 @@ public class RpcClient extends Thread {
                     SocketChannel socketChannel = (SocketChannel) channelFuture.channel();
                     log.info("----------------connect server success {}----------------", socketChannel.localAddress());
                     this.channel = socketChannel;
-                    socketChannel.closeFuture().sync();
                 } else {
                     log.error("Connect server attempt failed!");
                     channelFuture.cause().printStackTrace();
                 }
             });
+            future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             log.error("RpcNettyClient error", e);
         } finally {
