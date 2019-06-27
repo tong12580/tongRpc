@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 /**
  * rpc服务
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2019-6-20 15:04
  */
 @Slf4j
-public class RpcServer extends Thread {
+public class RpcServer extends Thread implements Supplier<RpcServer> {
 
     private int port;
     private int workerGroupThreadsSize;
@@ -85,5 +86,10 @@ public class RpcServer extends Thread {
             bossGroup.shutdownGracefully();
             SerializerUtils.cleanBuffer();
         }
+    }
+
+    @Override
+    public RpcServer get() {
+        return null;
     }
 }
