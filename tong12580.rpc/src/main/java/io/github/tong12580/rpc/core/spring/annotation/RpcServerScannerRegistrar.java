@@ -1,7 +1,10 @@
 package io.github.tong12580.rpc.core.spring.annotation;
 
+import io.github.tong12580.rpc.common.acquiescent.RpcDefaultConfig;
 import io.github.tong12580.rpc.core.lang.EnableRpcServer;
 import io.github.tong12580.rpc.service.RpcServer;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ResourceLoaderAware;
@@ -26,9 +29,6 @@ public class RpcServerScannerRegistrar implements ImportBeanDefinitionRegistrar,
                                         BeanDefinitionRegistry beanDefinitionRegistry) {
         AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata
                 .getAnnotationAttributes(EnableRpcServer.class.getName()));
-        GenericBeanDefinition genericBeanDefinition = new GenericBeanDefinition();
-        genericBeanDefinition.setBeanClass(RpcServer.class);
-        beanDefinitionRegistry.registerBeanDefinition("rpcServer", genericBeanDefinition);
 
     }
 

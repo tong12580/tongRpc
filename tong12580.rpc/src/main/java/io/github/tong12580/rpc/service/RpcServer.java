@@ -43,6 +43,13 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
         this.bossGroupThreadsSize = bossGroupThreadsSize;
     }
 
+    public RpcServer(int port) {
+        super("RpcServer");
+        this.port = port;
+        this.workerGroupThreadsSize = Runtime.getRuntime().availableProcessors() * 2;
+        this.bossGroupThreadsSize = Runtime.getRuntime().availableProcessors() * 2;
+    }
+
     @Override
     public void run() {
         log.info("Netty server start, port is : {}", port);
@@ -74,8 +81,10 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
                     log.info("----------------Server start success {}----------------",
                             channelFuture.channel().localAddress());
                 } else {
-                    log.error("Server start attempt failed!");
-                    channelFuture.cause().printStackTrace();
+                    log.error("Server start attempt failed!", channelFuture.cause());
+                    channelFuture.channel()
+                            .eventLoop()
+                            .schedule(new RpcServer(port + 1), 10, TimeUnit.SECONDS);
                 }
             });
             future.channel().closeFuture().sync();
