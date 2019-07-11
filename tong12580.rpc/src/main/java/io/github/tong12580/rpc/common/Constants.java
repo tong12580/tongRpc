@@ -16,4 +16,5 @@ public interface Constants {
     int CLOSE_THRESHOLD_VALUE = 2;
     String PING = "Ping";
     String PONG = "Pong";
+    String RPC_SERVER = "rpc_server";
 }

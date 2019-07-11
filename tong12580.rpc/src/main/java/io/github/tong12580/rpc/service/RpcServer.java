@@ -1,14 +1,13 @@
 package io.github.tong12580.rpc.service;
 
 import io.github.tong12580.rpc.common.SerializerUtils;
+import io.github.tong12580.rpc.common.acquiescent.RpcDefaultConfig;
+import io.github.tong12580.rpc.common.cache.PortTableCache;
 import io.github.tong12580.rpc.core.coder.RpcServiceMessageDecoder;
 import io.github.tong12580.rpc.core.coder.RpcServiceMessageEncoder;
+import io.github.tong12580.rpc.core.lang.DefaultThreadFactory;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -18,7 +17,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 /**
@@ -35,12 +34,37 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
     private int port;
     private int workerGroupThreadsSize;
     private int bossGroupThreadsSize;
+    private Channel channel;
+    private CyclicBarrier cyclicBarrier;
 
-    public RpcServer(int port, int workerGroupThreadsSize, int bossGroupThreadsSize) {
+    public Channel getChannel() {
+        return channel;
+    }
+
+    private static ExecutorService executorService = new ThreadPoolExecutor(1, 1,
+            0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(1),
+            new DefaultThreadFactory("RpcServer"));
+
+
+    public RpcServer(int port, int workerGroupThreadsSize, int bossGroupThreadsSize, CyclicBarrier cyclicBarrier) {
         super("RpcServer");
         this.port = port;
         this.workerGroupThreadsSize = workerGroupThreadsSize;
         this.bossGroupThreadsSize = bossGroupThreadsSize;
+        this.cyclicBarrier = cyclicBarrier;
+    }
+
+    public RpcServer(CyclicBarrier cyclicBarrier) {
+        super("RpcServer");
+        RpcDefaultConfig config = RpcDefaultConfig.build();
+        int port = config.getRpc().getServer().getPort();
+        while (PortTableCache.containsKey(port)) {
+            port++;
+        }
+        this.workerGroupThreadsSize = config.getRpc().getServer().getWorkerGroupThreadsSize();
+        this.bossGroupThreadsSize = config.getRpc().getServer().getBossGroupThreadsSize();
+        this.cyclicBarrier = cyclicBarrier;
     }
 
     public RpcServer(int port) {
@@ -80,11 +104,14 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
                 if (channelFuture.isSuccess()) {
                     log.info("----------------Server start success {}----------------",
                             channelFuture.channel().localAddress());
+                    this.channel = channelFuture.channel();
+                    cyclicBarrier.reset();
                 } else {
                     log.error("Server start attempt failed!", channelFuture.cause());
+                    port++;
                     channelFuture.channel()
                             .eventLoop()
-                            .schedule(new RpcServer(port + 1), 10, TimeUnit.SECONDS);
+                            .schedule(new RpcServer(port), 10, TimeUnit.SECONDS);
                 }
             });
             future.channel().closeFuture().sync();
@@ -99,6 +126,18 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
 
     @Override
     public RpcServer get() {
-        return null;
+       return builder();
+    }
+
+    public static RpcServer builder() {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(1);
+        RpcServer server = new RpcServer(cyclicBarrier);
+        executorService.execute(server);
+        try {
+            cyclicBarrier.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            log.error("Wait for an exception when getting RPC", e);
+        }
+        return server;
     }
 }
