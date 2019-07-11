@@ -1,6 +1,4 @@
-package io.github.tong12580.rpc.core.lang;
-
-import org.springframework.context.annotation.Import;
+package io.github.tong12580.rpc.core.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

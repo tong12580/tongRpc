@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.core.lang;
+package io.github.tong12580.rpc.core.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

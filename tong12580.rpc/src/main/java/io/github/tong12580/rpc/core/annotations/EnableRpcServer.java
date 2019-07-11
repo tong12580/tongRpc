@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.core.lang;
+package io.github.tong12580.rpc.core.annotations;
 
 import io.github.tong12580.rpc.core.spring.annotation.RpcServerScannerRegistrar;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -39,7 +39,7 @@ public @interface EnableRpcServer {
      * 扫描包位置
      * Scanning packet position
      */
-    String[] basePackages();
+    String[] basePackages() default {};
 
     /**
      * The {@link BeanNameGenerator} class to be used for naming detected components
@@ -55,7 +55,7 @@ public @interface EnableRpcServer {
      * <p>
      * Note this can be combined with markerInterface.
      */
-    Class<? extends Annotation> annotationClass() default Annotation.class;
+    Class<? extends Annotation> annotationClass() default RpcApi.class;
 
     /**
      * This property specifies the parent that the scanner will search for.

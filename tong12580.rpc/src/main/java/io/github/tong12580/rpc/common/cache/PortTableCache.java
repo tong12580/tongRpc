@@ -2,7 +2,8 @@ package io.github.tong12580.rpc.common.cache;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 端口记录表
@@ -13,11 +14,28 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2019-6-28 16:23
  */
 public class PortTableCache {
-    private AtomicInteger atomicInteger = new AtomicInteger();
+    private static Lock lock = new ReentrantLock();
     private volatile static List<Integer> PORT_TABLE = new ArrayList<>();
 
     public static void setPortTable(int port) {
-        PORT_TABLE.add(port);
+        try {
+            if (lock.tryLock()) {
+                PORT_TABLE.add(port);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public static boolean containsKey(int port) {
+        try {
+            if (lock.tryLock()) {
+                return PORT_TABLE.contains(port);
+            }
+            return containsKey(port);
+        } finally {
+            lock.unlock();
+        }
     }
 
 }
