@@ -35,7 +35,7 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
     private int workerGroupThreadsSize;
     private int bossGroupThreadsSize;
     private Channel channel;
-    private CyclicBarrier cyclicBarrier;
+    private CountDownLatch cyclicBarrier;
 
     public Channel getChannel() {
         return channel;
@@ -47,7 +47,7 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
             new DefaultThreadFactory("RpcServer"));
 
 
-    public RpcServer(int port, int workerGroupThreadsSize, int bossGroupThreadsSize, CyclicBarrier cyclicBarrier) {
+    public RpcServer(int port, int workerGroupThreadsSize, int bossGroupThreadsSize, CountDownLatch cyclicBarrier) {
         super("RpcServer");
         this.port = port;
         this.workerGroupThreadsSize = workerGroupThreadsSize;
@@ -55,7 +55,7 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
         this.cyclicBarrier = cyclicBarrier;
     }
 
-    public RpcServer(CyclicBarrier cyclicBarrier) {
+    public RpcServer(CountDownLatch cyclicBarrier) {
         super("RpcServer");
         RpcDefaultConfig config = RpcDefaultConfig.build();
         int port = config.getRpc().getServer().getPort();
@@ -105,7 +105,7 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
                     log.info("----------------Server start success {}----------------",
                             channelFuture.channel().localAddress());
                     this.channel = channelFuture.channel();
-                    cyclicBarrier.reset();
+                    cyclicBarrier.countDown();
                 } else {
                     log.error("Server start attempt failed!", channelFuture.cause());
                     port++;
@@ -130,12 +130,12 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
     }
 
     public static RpcServer builder() {
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(1);
+        CountDownLatch cyclicBarrier = new CountDownLatch(1);
         RpcServer server = new RpcServer(cyclicBarrier);
         executorService.execute(server);
         try {
             cyclicBarrier.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
+        } catch (InterruptedException e) {
             log.error("Wait for an exception when getting RPC", e);
         }
         return server;
