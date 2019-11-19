@@ -1,14 +1,14 @@
-package io.github.tong12580.rpc.service;
+package io.githud.tong12580.rpc.server;
 
 import com.alibaba.fastjson.JSON;
-import io.github.tong12580.rpc.common.message.RequestMessage;
-import io.github.tong12580.rpc.common.message.ResultMessage;
+import io.github.tong12580.common.core.lang.Constants;
+import io.github.tong12580.common.message.RequestMessage;
+import io.github.tong12580.common.message.ResultMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * Rpc服务处理器

@@ -15,7 +15,7 @@ public class RpcServerTest {
 
     @Test
     public void testServer() {
-        RpcServer re = new RpcServer(8080, 1, 1);
+        RpcServer re = new RpcServer(8080);
         re.run();
     }
 }

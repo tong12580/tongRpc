@@ -1,6 +1,5 @@
 package io.github.tong12580.rpc.common.cache;
 
-import io.github.tong12580.rpc.common.Constants;
 import io.github.tong12580.rpc.service.RpcServer;
 import io.netty.channel.Channel;
 
