@@ -1,7 +1,13 @@
-rpc:
-  client:
-    port: 21570
-    workerGroupThreadsSize: 1
-    bossGroupThreadsSize: 1
-  server:
-    port: 15860
+tong:
+  rpc:
+    client:
+      ip: 127.0.0.1
+      port: 21570
+      workerGroupThreadsSize: 1
+      bossGroupThreadsSize: 1
+    server:
+      ip: 127.0.0.1
+      port: 9501
+consul:
+  ip: 127.0.0.1
+  port: 9052

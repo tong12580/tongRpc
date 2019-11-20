@@ -1,0 +1,40 @@
+{
+  "properties": [
+    {
+      "name": "consul.ip",
+      "type": "java.lang.String",
+      "defaultValue": "127.0.0.1",
+      "description": "consul"
+    },
+    {
+      "name": "consul.port",
+      "type": "java.lang.Integer",
+      "defaultValue": "9052",
+      "description": "consul"
+    },
+    {
+      "name": "tong.rpc.server.ip",
+      "type": "java.lang.String",
+      "defaultValue": "127.0.0.1",
+      "description": "tongRpcServer"
+    },
+    {
+      "name": "tong.rpc.server.port",
+      "type": "java.lang.Integer",
+      "defaultValue": "9501",
+      "description": "tongRpcServer"
+    },
+    {
+      "name": "tong.rpc.client.port",
+      "type": "java.lang.Integer",
+      "defaultValue": "21570",
+      "description": "tongRpcServer"
+    },
+    {
+      "name": "tong.rpc.client.ip",
+      "type": "java.lang.String",
+      "defaultValue": "127.0.0.1",
+      "description": "tongRpcServer"
+    }
+  ]
+}
