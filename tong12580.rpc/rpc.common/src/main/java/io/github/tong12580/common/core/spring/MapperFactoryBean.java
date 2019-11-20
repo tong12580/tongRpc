@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.core.spring.factory;
+package io.github.tong12580.common.core.spring;
 
 import org.springframework.beans.factory.FactoryBean;
 

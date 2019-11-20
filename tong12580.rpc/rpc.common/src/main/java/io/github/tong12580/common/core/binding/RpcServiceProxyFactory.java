@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.core.binding;
+package io.github.tong12580.common.core.binding;
 
 import java.lang.reflect.Proxy;
 

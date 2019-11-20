@@ -22,11 +22,7 @@ import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 /**
@@ -52,7 +48,7 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
 
     private static ExecutorService executorService = new ThreadPoolExecutor(1, 1,
             0L, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(1),
+            new SynchronousQueue<>(),
             new DefaultThreadFactory("RpcServer"));
 
 
@@ -114,7 +110,9 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
                     log.info("----------------Server start success {}----------------",
                             channelFuture.channel().localAddress());
                     this.channel = channelFuture.channel();
-                    cyclicBarrier.countDown();
+                    if (null != cyclicBarrier) {
+                        cyclicBarrier.countDown();
+                    }
                 } else {
                     log.error("Server start attempt failed!", channelFuture.cause());
                     port++;
@@ -135,7 +133,7 @@ public class RpcServer extends Thread implements Supplier<RpcServer> {
 
     @Override
     public RpcServer get() {
-       return builder();
+        return builder();
     }
 
     public static RpcServer builder() {

@@ -1,6 +1,5 @@
-package io.github.tong12580.rpc;
+package io.github.tong12580.rpc.client;
 
-import io.github.tong12580.rpc.client.RpcClient;
 import org.junit.Test;
 
 /**

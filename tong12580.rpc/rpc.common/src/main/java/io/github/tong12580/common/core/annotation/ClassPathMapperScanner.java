@@ -1,4 +1,4 @@
-package io.github.tong12580.rpc.core.spring.annotation;
+package io.github.tong12580.common.core.annotation;
 
 import java.lang.annotation.Annotation;
 

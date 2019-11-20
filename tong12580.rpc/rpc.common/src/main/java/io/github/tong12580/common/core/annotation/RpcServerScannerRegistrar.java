@@ -1,6 +1,6 @@
-package io.github.tong12580.rpc.core.spring.annotation;
+package io.github.tong12580.common.core.annotation;
 
-import io.github.tong12580.rpc.core.annotations.EnableRpcServer;
+import io.github.tong12580.common.annotation.EnableRpcServer;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
