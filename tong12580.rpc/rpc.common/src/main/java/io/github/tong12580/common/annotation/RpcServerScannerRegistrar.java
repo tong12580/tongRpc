@@ -35,7 +35,7 @@ public class RpcServerScannerRegistrar implements ImportBeanDefinitionRegistrar,
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
                                         BeanDefinitionRegistry beanDefinitionRegistry) {
         AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata
-                .getAnnotationAttributes(RpcApi.class.getName()));
+                .getAnnotationAttributes(EnableRpcServer.class.getName()));
         ClassPathMapperScanner scanner = new ClassPathMapperScanner(beanDefinitionRegistry, false);
         if (resourceLoader != null) {
             scanner.setResourceLoader(resourceLoader);

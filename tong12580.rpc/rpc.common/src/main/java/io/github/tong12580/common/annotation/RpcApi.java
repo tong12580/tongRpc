@@ -35,43 +35,4 @@ public @interface RpcApi {
      * Is it the service provider
      */
     boolean isServerProvider() default false;
-
-    /**
-     * 扫描包位置
-     * Scanning packet position
-     */
-    String[] basePackages() default {};
-
-    /**
-     * The {@link BeanNameGenerator} class to be used for naming detected components
-     * within the Spring container.
-     */
-    Class<? extends BeanNameGenerator> nameGenerator() default BeanNameGenerator.class;
-
-
-    /**
-     * This property specifies the annotation that the scanner will search for.
-     * <p>
-     * The scanner will register all interfaces in the base package that also have
-     * the specified annotation.
-     * <p>
-     * Note this can be combined with markerInterface.
-     */
-    Class<? extends Annotation> annotationClass() default Annotation.class;
-
-    /**
-     * This property specifies the parent that the scanner will search for.
-     * <p>
-     * The scanner will register all interfaces in the base package that also have
-     * the specified interface class as a parent.
-     * <p>
-     * Note this can be combined with annotationClass.
-     */
-    Class<?> markerInterface() default Class.class;
-
-    /**
-     * Specifies a custom MapperFactoryBean to return a mybatis proxy as spring bean.
-     *
-     */
-    Class<? extends MapperFactoryBean> factoryBean() default MapperFactoryBean.class;
 }
