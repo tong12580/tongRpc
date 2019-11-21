@@ -1,6 +1,6 @@
 package io.github.tong12580.server;
 
-import io.githud.tong12580.rpc.server.RpcServer;
+import io.github.tong12580.rpc.server.RpcServer;
 import org.junit.Test;
 
 /**

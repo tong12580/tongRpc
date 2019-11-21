@@ -1,4 +1,4 @@
-package io.github.tong12580.common.core.binding;
+package io.github.tong12580.rpc.server.spring.boot.binding;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;

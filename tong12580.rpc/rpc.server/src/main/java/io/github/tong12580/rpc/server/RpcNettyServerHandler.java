@@ -1,4 +1,4 @@
-package io.githud.tong12580.rpc.server;
+package io.github.tong12580.rpc.server;
 
 import com.alibaba.fastjson.JSON;
 import io.github.tong12580.common.core.lang.Constants;

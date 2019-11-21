@@ -27,6 +27,7 @@
         <lombok.version>1.16.20</lombok.version>
         <consul.version>1.4.2</consul.version>
         <spring.version>5.1.7.RELEASE</spring.version>
+        <spring.boot>2.1.5.RELEASE</spring.boot>
     </properties>
     <groupId>io.github.tong12580</groupId>
     <artifactId>tong12580.rpc</artifactId>
@@ -68,20 +69,20 @@
             </plugin>
 
             <!-- GPG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-gpg-plugin</artifactId>-->
+<!--                <version>1.5</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>sign-artifacts</id>-->
+<!--                        <phase>verify</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>sign</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

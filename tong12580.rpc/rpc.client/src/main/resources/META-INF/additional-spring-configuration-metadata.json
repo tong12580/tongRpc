@@ -1,0 +1,87 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcProperties",
+      "name": "tong",
+      "type": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcProperties"
+    },
+    {
+      "sourceType": "io.github.tong12580.rpc.client.spring.boot.autoconfigure.TongRpcClientProperties",
+      "name": "tong.rpc.client",
+      "type": "io.github.tong12580.rpc.client.spring.boot.autoconfigure.TongRpcClientProperties"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties",
+      "name": "tong.consul",
+      "type": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcProperties",
+      "defaultValue": false,
+      "name": "tong.check-config-location",
+      "description": "Indicates whether perform presence check of the Rpc mapper config file.",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcProperties",
+      "name": "tong.config-location",
+      "description": "Indicates whether perform presence check of the Rpc mapper config file.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties",
+      "defaultValue": 8500,
+      "name": "tong.consul.port",
+      "description": "Rpc consul port.",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties",
+      "defaultValue": "127.0.0.1",
+      "name": "tong.consul.ip",
+      "description": "Rpc consul ip.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties",
+      "defaultValue": "10s",
+      "name": "tong.consul.interval",
+      "description": "Rpc consul interval.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties",
+      "defaultValue": "1s",
+      "name": "tong.consul.timeout",
+      "description": "Rpc consul ip.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "io.github.tong12580.common.core.spring.boot.autoconfigure.TongRpcConsulProperties",
+      "defaultValue": [
+        "test"
+      ],
+      "name": "tong.consul.tags",
+      "description": "Rpc consul ip.",
+      "type": "java.lang.String[]"
+    },
+    {
+      "sourceType": "io.github.tong12580.rpc.client.spring.boot.autoconfigure.TongRpcClientProperties",
+      "defaultValue": 21570,
+      "name": "tong.rpc.client.port",
+      "description": "Rpc client port.",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "io.github.tong12580.rpc.client.spring.boot.autoconfigure.TongRpcClientProperties",
+      "defaultValue": 1,
+      "name": "tong.rpc.client.clientLoopSize",
+      "description": "Rpc client port.",
+      "type": "java.lang.Integer"
+    }
+
+  ]
+}

@@ -1,4 +1,4 @@
-package io.github.tong12580.common.annotation;
+package io.github.tong12580.rpc.server.spring.boot.annotation;
 
 import io.github.tong12580.common.core.annotation.ClassPathMapperScanner;
 import io.github.tong12580.common.core.spring.MapperFactoryBean;
@@ -29,6 +29,7 @@ import java.util.List;
  * @since 2019-6-27 16:35
  */
 public class RpcServerScannerRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, BeanFactoryAware {
+
     private ResourceLoader resourceLoader;
 
     @Override

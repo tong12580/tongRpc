@@ -1,5 +1,6 @@
-package io.github.tong12580.common.annotation;
+package io.github.tong12580.rpc.server.spring.boot.annotation;
 
+import io.github.tong12580.common.annotation.RpcApi;
 import io.github.tong12580.common.core.spring.MapperFactoryBean;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.Import;

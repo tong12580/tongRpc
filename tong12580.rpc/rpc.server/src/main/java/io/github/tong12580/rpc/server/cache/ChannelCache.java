@@ -1,7 +1,7 @@
-package io.githud.tong12580.rpc.server.cache;
+package io.github.tong12580.rpc.server.cache;
 
 import io.github.tong12580.common.core.lang.Constants;
-import io.githud.tong12580.rpc.server.RpcServer;
+import io.github.tong12580.rpc.server.RpcServer;
 import io.netty.channel.Channel;
 
 import java.util.Map;

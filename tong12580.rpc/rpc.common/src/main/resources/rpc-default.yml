@@ -1,13 +1,18 @@
 tong:
+  check-config-location: false
   rpc:
     client:
       ip: 127.0.0.1
       port: 21570
+      clientLoopSize: 1
+    server:
+      port: 9501
       workerGroupThreadsSize: 1
       bossGroupThreadsSize: 1
-    server:
-      ip: 127.0.0.1
-      port: 9501
-consul:
-  ip: 127.0.0.1
-  port: 9052
+  consul:
+    ip: 127.0.0.1
+    port: 8500
+    interval: 10s
+    timeout: 1s
+    tags:
+      - test
