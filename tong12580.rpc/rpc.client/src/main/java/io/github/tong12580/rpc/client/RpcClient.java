@@ -2,6 +2,7 @@ package io.github.tong12580.rpc.client;
 
 import io.github.tong12580.common.core.coder.RpcClientMessageDecoder;
 import io.github.tong12580.common.core.coder.RpcClientMessageEncoder;
+import io.github.tong12580.common.exceptions.RpcClientException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -40,7 +41,7 @@ public class RpcClient extends Thread {
         if (null != channel) {
             return channel;
         }
-        return null;
+        throw new RpcClientException("Get Rpc client channel exception!");
     }
 
     public RpcClient(int port, String host, int clientLoopSize) {
